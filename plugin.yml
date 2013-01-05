@@ -1,0 +1,9 @@
+author: Tyler Reed
+database: false
+description: "Send notifications when specific blocks are broken\r\n"
+generator: http://dinnerbone.com/minecraft/tools/pluginator/
+main: com.randrdevelopment.plugins.blockbreaknotifier.BlockBreakNotifier
+name: BlockBreakNotifier
+startup: postworld
+url: http://www.randrdevelopment.com/
+version: '1.0'
