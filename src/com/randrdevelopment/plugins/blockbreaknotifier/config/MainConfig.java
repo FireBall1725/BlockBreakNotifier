@@ -26,4 +26,6 @@ public class MainConfig extends Config {
 			add("15");
 		}
 	};
+	
+	public int Block_CheckRadius = 1;
 }
