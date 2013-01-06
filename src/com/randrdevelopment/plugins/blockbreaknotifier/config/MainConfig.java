@@ -13,5 +13,17 @@ public class MainConfig extends Config {
 		CONFIG_HEADER = "Block Notification Configuration File";
 	}
 	
-	public ArrayList<BlockListenerConfig> BlockConfig = new ArrayList<BlockListenerConfig>(){{add(new BlockListenerConfig(1));}};
+	public Boolean Database_UseDatabase = false;
+	public String Database_DatabaseServer = "localhost";
+	public String Database_DatabaseUsername = "";
+	public String Database_DatabasePassword = "";
+	public String Database_DatabaseName = "minecraft";
+	
+	public ArrayList<String> Blocks = new ArrayList<String>() {
+		{
+			add("56");
+			add("14");
+			add("15");
+		}
+	};
 }

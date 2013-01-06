@@ -1,9 +1,18 @@
-author: Tyler Reed
-database: false
-description: "Send notifications when specific blocks are broken\r\n"
-generator: http://dinnerbone.com/minecraft/tools/pluginator/
-main: com.randrdevelopment.plugins.blockbreaknotifier.BlockBreakNotifier
 name: BlockBreakNotifier
-startup: postworld
+author: Tyler Reed
 url: http://www.randrdevelopment.com/
-version: '1.0'
+
+version: 1.0
+main: com.randrdevelopment.plugins.blockbreaknotifier.BlockBreakNotifier
+
+database: false
+description: Send notifications when specific blocks are broken.
+
+startup: startup
+
+softdepend: [Vault, PlotMe, LWC]
+
+permissions:
+   blockbreaknotifier.getnotification:
+      description: See block break notifications
+      default: op
