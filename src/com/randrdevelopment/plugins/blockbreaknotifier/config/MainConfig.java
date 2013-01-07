@@ -28,4 +28,6 @@ public class MainConfig extends Config {
 	};
 	
 	public int Block_CheckRadius = 1;
+	public int Notification_Cooldown = 15000;
+	public String Notification_Message = "";
 }

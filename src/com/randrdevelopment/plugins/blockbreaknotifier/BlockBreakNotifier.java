@@ -111,19 +111,45 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
     		}
     		
     		// Log Break in Config
-    		HashMap<String, String> blockBreak = playerBreakData.PlayerBlockLastBreak.get(e.getPlayer().getName());
+    		Boolean ShowMessage = true;
     		
-    		if (blockBreak != null) {
-    			
+    		HashMap<String, Long> blockBreak = playerBreakData.PlayerBlockLastBreak.get(e.getPlayer().getName());
+    		
+    		if (blockBreak == null) {
+    			blockBreak = new HashMap<String, Long>();
+    		}
+    		else
+    		{
+    			if (blockBreak.containsKey(blockID))
+    			{
+    				if (System.currentTimeMillis() - mainConfig.Notification_Cooldown <= blockBreak.get(blockID)) {
+    					ShowMessage = false;
+    				}
+    			}
     		}
     		
-    		//HashMap<String, String> blockData = new HashMap<String, String>();
-    		blockBreak.put(blockID, String.valueOf(System.currentTimeMillis()));
+    		blockBreak.put(blockID, System.currentTimeMillis());
     		playerBreakData.PlayerBlockLastBreak.put(e.getPlayer().getName(), blockBreak);
     		
-    		//int count = 0;
-    		//HashMap<String, Integer> blockCount = playerBreakData.PlayerBlockBreakCount.get(e.getPlayer().getName());
+    		int count = 0;
+    		HashMap<String, Integer> blockCount = playerBreakData.PlayerBlockBreakCount.get(e.getPlayer().getName());
     		
+    		if (blockCount == null)
+    		{
+    			blockCount = new HashMap<String, Integer>();
+    			blockCount.put(blockID, 1);
+    		}
+    		else
+    		{
+    			if (blockCount.containsKey(blockID))
+    			{
+    				count = blockCount.get(blockID);
+    			}
+    			count ++;
+    			blockCount.put(blockID, count);
+    		}
+    		
+    		playerBreakData.PlayerBlockBreakCount.put(e.getPlayer().getName(), blockCount);
     		
     		try {
 				playerBreakData.save();
@@ -131,7 +157,9 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
 				broadcastMessage(e1.toString());
 			}
     		
-    		broadcastMessage(message);
+    		if (ShowMessage) {
+    			broadcastMessage(message);
+    		}
     	}
     }
 
