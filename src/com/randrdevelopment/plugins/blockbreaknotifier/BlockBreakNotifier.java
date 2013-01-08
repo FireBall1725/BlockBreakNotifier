@@ -12,6 +12,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,12 +22,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.randrdevelopment.plugins.blockbreaknotifier.command.CommandManager;
+import com.randrdevelopment.plugins.blockbreaknotifier.commands.DefaultCommand;
 import com.randrdevelopment.plugins.blockbreaknotifier.config.MainConfig;
 import com.randrdevelopment.plugins.blockbreaknotifier.config.PlayerBreakData;
 
 public class BlockBreakNotifier extends JavaPlugin implements Listener {
 	private MainConfig mainConfig;
 	private PlayerBreakData playerBreakData;
+	private CommandManager commandManager;
 	
     public void onDisable() {
         // TODO: Place any custom disable code here.
@@ -42,8 +47,8 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
         registerCommands();
     }
 
-    private String getTag() {
-    	return ChatColor.AQUA + "[BBN]" + ChatColor.GOLD;
+    public String getTag() {
+    	return ChatColor.AQUA + "[BBN]" + ChatColor.GOLD + " ";
     }
     
     private Boolean loadConfig() {
@@ -68,7 +73,14 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
     }
     
     private void registerCommands() {
+    	commandManager = new CommandManager();
     	
+    	commandManager.addCommand(new DefaultCommand(this));
+    }
+    
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        return commandManager.dispatch(sender, command, label, args, this);
     }
     
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

@@ -12,6 +12,11 @@ startup: startup
 
 softdepend: [Vault, PlotMe, LWC]
 
+commands:
+   bbn:
+      description: Main Command for Block Break Notification
+      usage: /<command> help
+
 permissions:
    blockbreaknotifier.getnotification:
       description: See block break notifications
