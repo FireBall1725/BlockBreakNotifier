@@ -21,3 +21,6 @@ permissions:
    blockbreaknotifier.getnotification:
       description: See block break notifications
       default: op
+   blockbreaknotifier.reload:
+      description: Reload Configuration
+      default: op

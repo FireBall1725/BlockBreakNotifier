@@ -19,6 +19,7 @@ public class MainConfig extends Config {
 	public String Database_DatabasePassword = "";
 	public String Database_DatabaseName = "minecraft";
 	
+	@SuppressWarnings("serial")
 	public ArrayList<String> Blocks = new ArrayList<String>() {
 		{
 			add("56");

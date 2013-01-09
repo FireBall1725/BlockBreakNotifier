@@ -1,5 +1,6 @@
 package com.randrdevelopment.plugins.blockbreaknotifier.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.randrdevelopment.plugins.blockbreaknotifier.BlockBreakNotifier;
@@ -18,6 +19,11 @@ public class DefaultCommand extends BaseCommand {
 
 	@Override
 	public void execute(CommandSender sender, String[] args) {
+		if (!sender.hasPermission("blockbreaknotifier.getnotification")){
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+			return;
+		}
+		
 		sender.sendMessage(plugin.getTag() + "BlockBreakNotifier Version 0.01 - /bbn help for help");
 		sender.sendMessage(plugin.getTag() + "Created by: FireBall1725");
 		sender.sendMessage(plugin.getTag() + "http://www.github.com/FireBall1725");
