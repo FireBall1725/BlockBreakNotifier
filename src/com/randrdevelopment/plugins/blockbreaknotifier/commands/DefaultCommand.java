@@ -27,5 +27,20 @@ public class DefaultCommand extends BaseCommand {
 		sender.sendMessage(plugin.getTag() + "BlockBreakNotifier Version 0.01 - /bbn help for help");
 		sender.sendMessage(plugin.getTag() + "Created by: FireBall1725");
 		sender.sendMessage(plugin.getTag() + "http://www.github.com/FireBall1725");
+	
+		Boolean MutedNotifications;
+		
+		if (plugin.playerConfig.PlayerConfig_MuteOption.containsKey(sender.getName())) {
+			MutedNotifications = plugin.playerConfig.PlayerConfig_MuteOption.get(sender.getName());
+		}
+		else
+		{
+			MutedNotifications = false;
+		}
+		
+		if (MutedNotifications)
+		{
+			sender.sendMessage(plugin.getTag() + "Your notifications are muted");
+		}
 	}
 }
