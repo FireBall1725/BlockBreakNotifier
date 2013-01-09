@@ -6,12 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.randrdevelopment.plugins.blockbreaknotifier.command.CommandManager;
 import com.randrdevelopment.plugins.blockbreaknotifier.commands.DefaultCommand;
 import com.randrdevelopment.plugins.blockbreaknotifier.commands.HelpCommand;
+import com.randrdevelopment.plugins.blockbreaknotifier.commands.MuteCommand;
 import com.randrdevelopment.plugins.blockbreaknotifier.commands.ReloadCommand;
 import com.randrdevelopment.plugins.blockbreaknotifier.config.MainConfig;
 import com.randrdevelopment.plugins.blockbreaknotifier.config.PlayerBreakData;
@@ -25,8 +25,6 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
 	public PlayerBreakData playerBreakData;
 	public PlayerSettings playerConfig;
 	public CommandManager commandManager;
-	private final BlockBreakListener blockBreakListener = new BlockBreakListener(this);
-	private final PlayerJoinListener playerJoinListener = new PlayerJoinListener(this);
 	
     public void onDisable() {
         // TODO: Place any custom disable code here.
@@ -78,20 +76,41 @@ public class BlockBreakNotifier extends JavaPlugin implements Listener {
     	commandManager.addCommand(new DefaultCommand(this));
     	commandManager.addCommand(new ReloadCommand(this));
     	commandManager.addCommand(new HelpCommand(this));
+    	commandManager.addCommand(new MuteCommand(this));
     }
     
     private void registerListeners() {
-    	PluginManager pm = getServer().getPluginManager();
     	getCommand("bbn").setExecutor(new CommandListener(this));
-    	pm.registerEvents(blockBreakListener, this);
-    	pm.registerEvents(playerJoinListener, this);
+    	getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
+    	getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
     }
 
+    public String colouriseText(String string){
+    	return string.replaceAll("(&([a-fk-or0-9]))", "\u00A7$2");
+    }
+    
+    public void sendMessage(String message, Player player) {
+    	player.sendMessage(getTag() + message);
+    }
+    
 	public void broadcastMessage(String message) {
 		Player[] playersonline = Bukkit.getServer().getOnlinePlayers();
+		
 		for(Player p:playersonline){
+			Boolean MutedNotifications;
+			
+			if (playerConfig.PlayerConfig_MuteOption.containsKey(p.getName())) {
+				MutedNotifications = playerConfig.PlayerConfig_MuteOption.get(p.getName());
+			}
+			else
+			{
+				MutedNotifications = false;
+			}
+			
 			if (p.isOp()||p.hasPermission("blockbreaknotifier.getnotification")){
-				p.sendMessage(getTag() + message);
+				if (!MutedNotifications) {
+					p.sendMessage(getTag() + message);
+				}
 			}
 		} 
 	}
