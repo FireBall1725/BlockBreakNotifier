@@ -52,12 +52,14 @@ Block:
   CheckRadius: 5				# Radius
 Notification:
   Cooldown: 15000				# Cool down time on messages in ms
-  Message: ''					# Message Shown to users
+  Message: ''					# Message Shown to users (supports standard minecraft &color codes)
 ```
 
 ##Message Options
-* %username% - User's Display Name
-* %userlocation% - User's location at time of block break
-* %blocklocation% - The location of the block broken
-* %worldname% - Name of the world
+* %playername% - Player Display Name
+* %blockname% - Block Name (i.e. DIAMOND BLOCK)
+* %blockid% - Block ID Number
+* %worldname% - World Name
+* %playerlocation% - Players Location (X, Y, Z)
+* %blocklocation% - Blocks Location (X, Y, Z)
 * %radiuscount% - Number of blocks around the block of the same type

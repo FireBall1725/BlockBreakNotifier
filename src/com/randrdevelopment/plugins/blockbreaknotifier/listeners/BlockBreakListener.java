@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -34,9 +33,8 @@ public class BlockBreakListener implements Listener {
 		if (plugin.mainConfig.Blocks.contains(blockID)) {
 			// Construct the message to send
 			String playerName = e.getPlayer().getDisplayName();
-			String playerLocation = "[" + e.getPlayer().getLocation().getWorld().getName() + "] " + e.getPlayer().getLocation().getBlockX() + ", " + e.getPlayer().getLocation().getBlockY() + ", " + e.getPlayer().getLocation().getBlockZ();
 			
-			String message = "Player " + ChatColor.DARK_AQUA + playerName + ChatColor.GOLD + " Broke Block " + ChatColor.DARK_AQUA + blockName + " (" + blockID + ")" + ChatColor.GOLD + " at location " + ChatColor.DARK_AQUA + playerLocation;
+			int radiuscount = 0;
 			
 			if (plugin.mainConfig.Block_CheckRadius > 1)
 			{
@@ -54,12 +52,16 @@ public class BlockBreakListener implements Listener {
 						}
 					}
 				}
-				
-				if (blocks.size() > 0)
-				{
-					message += ChatColor.GOLD + " Found " + ChatColor.DARK_AQUA + blocks.size() + ChatColor.GOLD + " in area";
-				}
+				radiuscount = blocks.size();
 			}
+			
+			String partPlayerName = playerName;
+			String partBlockName = blockName;
+			String partBlockID = blockID;
+			String partWorldName = e.getPlayer().getLocation().getWorld().getName();
+			String partPlayerLocation = e.getPlayer().getLocation().getBlockX() + ", " + e.getPlayer().getLocation().getBlockY() + ", " + e.getPlayer().getLocation().getBlockZ();
+			String partBlockLocation = e.getBlock().getLocation().getBlockX() + ", " + e.getBlock().getLocation().getBlockY() + ", " + e.getBlock().getLocation().getBlockZ();
+			String partRadiusCount = Integer.toString(radiuscount);
 			
 			// Log Break in Config
 			Boolean ShowMessage = true;
@@ -108,8 +110,36 @@ public class BlockBreakListener implements Listener {
 				plugin.broadcastMessage(e1.toString());
 			}
 			
+			// Generate Message
+			String Message = "";
+			
+			if (plugin.mainConfig.Notification_Message.equals("") || plugin.mainConfig.Notification_Message == null)
+				Message = "&6Player &3%playername% &6Broke Block &3%blockname% (%blockid%) &6at location &3[%worldname%] %playerlocation% &6Found &3%radiuscount% &6in area";
+			else
+				Message = plugin.mainConfig.Notification_Message;
+			
+			/* Message Parts
+			 * %playername% - Player Display Name
+			 * %blockname% - Block Name (i.e. DIAMOND BLOCK)
+			 * %blockid% - Block ID Number
+			 * %worldname% - World Name
+			 * %playerlocation% - Players Location (X, Y, Z)
+			 * %blocklocation% - Blocks Location (X, Y, Z)
+			 * %radiuscount% - Number of blocks around the block of the same type
+			 */
+
+			Message = Message.replace("%playername%", partPlayerName);
+			Message = Message.replace("%blockname%", partBlockName);
+			Message = Message.replace("%blockid%", partBlockID);
+			Message = Message.replace("%worldname%", partWorldName);
+			Message = Message.replace("%playerlocation%", partPlayerLocation);
+			Message = Message.replace("%blocklocation%", partBlockLocation);
+			Message = Message.replace("%radiuscount%", partRadiusCount);
+			
+			Message = plugin.colouriseText(Message);
+			
 			if (ShowMessage) {
-				plugin.broadcastMessage(message);
+				plugin.broadcastMessage(Message);
 			}
 		}
 	}
