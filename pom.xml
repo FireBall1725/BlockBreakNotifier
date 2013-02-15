@@ -57,6 +57,6 @@
     </dependencies>
     
     <properties>
-        <bukkit.version>1.4.7-R1.0</bukkit>
+        <bukkit.version>1.4.7-R1.0</bukkit.version>
     </properties>
 </project>
